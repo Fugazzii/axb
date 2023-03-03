@@ -1,0 +1,12 @@
+[package]
+name = "axb"
+version = "0.1.2"
+edition = "2021"
+authors = ["Ilia Sichinava"]
+repository = "https://github.com/Fugazzii/Axb"
+description = "Rust library for linear algebra"
+license = "MIT OR Apache-2.0"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
