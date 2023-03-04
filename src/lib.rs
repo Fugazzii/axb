@@ -4,6 +4,14 @@ pub struct Matrix<const R:usize, const C: usize> {
 }
 
 impl <const R:usize, const C:usize> Matrix<R, C> {
+    /// Constructor function for creating Matrix object with 2d array
+    /// # Generic arguments
+    /// * `R` - Number of rows
+    /// * `C` - Number of columns
+    /// # Function arguments
+    /// * `matrice` - [[f32; C]; R]
+    /// # Returns
+    /// - `Matrix<R, C>`
     pub fn new(matrice: [[f32; C]; R]) -> Self {
         let mut matrix : Vec<Vec<f32>> = vec![];
 
@@ -22,6 +30,14 @@ impl <const R:usize, const C:usize> Matrix<R, C> {
         Self { matrice: matrix }
     }
 
+    /// Constructor function for creating Matrix object with jagged vectors
+    /// # Generic arguments
+    /// * `R` - Number of rows
+    /// * `C` - Number of columns
+    /// # Function arguments
+    /// * `matrice` - Vec<Vec<f32>>
+    /// # Returns
+    /// - `Matrix<R, C>`
     pub fn new_from_vec(v: Vec<Vec<f32>>) -> Self {
         let mut vc: Vec<Vec<f32>> = vec![];
 
@@ -36,6 +52,10 @@ impl <const R:usize, const C:usize> Matrix<R, C> {
         Self { matrice: vc }
     }
 
+    /// Method that transposes Matrix
+    /// - Expects no arguments
+    /// # Returns
+    /// - `Matrix::<C, R>`
     pub fn transpose(&self) -> Matrix::<C, R> {
         let mut vc: Vec<Vec<f32>> = vec![];
 
@@ -62,6 +82,8 @@ impl <const R:usize, const C:usize> Matrix<R, C> {
         }
     }
 
+    /// Returns whether matrix is square or not
+    /// - Expects no arguments
     pub fn is_square_matrix(&self) -> bool {
         R == C
     }
@@ -89,6 +111,7 @@ impl <const R:usize, const C:usize> Matrix<R, C> {
         }
         det
     }
+
 
     pub fn inverse(&self) -> Matrix::<R, C> {
         // Create an augmented matrix by concatenating the identity matrix
@@ -228,6 +251,34 @@ impl <const R:usize, const C:usize> Matrix<R, C> {
         }
 
         (Matrix::<R, C>::new_from_vec(l), Matrix::<R, C>::new_from_vec(d), Matrix::<R, C>::new_from_vec(u))
+    }
+
+    pub fn dot_by_vec(&self, mtx: &Vec<f32>) -> Matrix::<R, 1>{
+        if C != 1 {
+            panic!("Not a vector")
+        }
+
+        let mut dot_product: Matrix::<R, 1> = Matrix::<R, 1>::new_from_vec(vec![]);
+        for idx in 0..R {
+            let product = vec![self.matrice[idx][0] * mtx[idx]];
+            dot_product.matrice.push(product);
+        }
+
+        dot_product
+    }
+
+    pub fn dot_by_matrix(&self, mtx: &Matrix::<R, 1>) -> Matrix::<R, 1>{
+        if C != 1 {
+            panic!("Not a vector")
+        }
+
+        let mut dot_product: Matrix::<R, 1> = Matrix::<R, 1>::new_from_vec(vec![]);
+        for idx in 0..R {
+            let product = vec![self.matrice[idx][0] * mtx.matrice[idx][0]];
+            dot_product.matrice.push(product);
+        }
+
+        dot_product
     }
 
 }
