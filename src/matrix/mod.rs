@@ -2,6 +2,8 @@ mod errors;
 pub mod transform;
 use errors::{non_vector_error};
 
+use self::transform::mult;
+
 #[derive(Debug)]
 pub struct Matrix<const R:usize, const C: usize> {
     pub matrice: Vec<Vec<f32>>
@@ -328,6 +330,14 @@ impl <const R:usize, const C:usize> Matrix<R, C> {
         }
         
         true
+    }
+
+    pub fn power(self, power: u32) -> Matrix::<R, C> {
+        let mut result = self.matrice.clone();
+        for _i in 0..power-1 {
+            result = mult(&result, &result);
+        }
+        Matrix::<R, C>::new_from_vec(result)
     }
 }
 
